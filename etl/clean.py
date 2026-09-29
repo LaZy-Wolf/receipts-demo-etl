@@ -10,7 +10,8 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 def dedupe_orders(orders: pd.DataFrame) -> pd.DataFrame:
     """One row per order_id: the most recent version of each order."""
-    return orders.drop_duplicates(subset="order_id", keep="first").reset_index(drop=True)
+    latest = orders.sort_values("updated_at", kind="stable").drop_duplicates(subset="order_id", keep="last")
+    return latest.sort_index().reset_index(drop=True)
 
 
 def drop_test_orders(orders: pd.DataFrame) -> pd.DataFrame:
