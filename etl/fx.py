@@ -9,5 +9,7 @@ def to_eur(orders: pd.DataFrame, rates: pd.DataFrame) -> pd.DataFrame:
         how="left",
     )
     merged.loc[merged["currency"] == "EUR", "rate_to_eur"] = 1.0
+    # No rates are published on weekends: carry the last known rate forward.
+    merged["rate_to_eur"] = merged["rate_to_eur"].ffill()
     merged["amount_eur"] = (merged["amount"] * merged["rate_to_eur"]).round(2)
     return merged.drop(columns=["rate_to_eur"])
