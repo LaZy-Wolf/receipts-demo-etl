@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sales-etl"
+version = "3.1.0"
+description = "Nightly sales pipeline: clean order exports, convert to EUR, build the revenue report."
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.2", "click>=8.1"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+sales-etl = "etl.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["etl*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
