@@ -8,7 +8,7 @@ def paid(orders: pd.DataFrame) -> pd.DataFrame:
 def monthly_revenue(orders: pd.DataFrame) -> pd.Series:
     """Paid revenue in EUR per calendar month, oldest first."""
     p = paid(orders)
-    out = p.groupby(p["order_date"].dt.month)["amount_eur"].sum().round(2)
+    out = p.groupby(p["order_date"].dt.to_period("M"))["amount_eur"].sum().round(2)
     out.index.name = "month"
     return out
 
