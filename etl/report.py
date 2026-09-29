@@ -1,3 +1,5 @@
+import json
+
 from .pipeline import Result
 
 
@@ -16,3 +18,11 @@ def render(result: Result) -> str:
     lines += ["", "## Data quality", ""]
     lines += _table(["Check", "Rows"], [[k, v] for k, v in result.checks.items()])
     return "\n".join(lines) + "\n"
+
+
+def render_json(result: Result) -> str:
+    return json.dumps({
+        "monthly": {str(k): float(v) for k, v in result.monthly.items()},
+        "top_customers": json.loads(result.top.to_json(orient="records")),
+        "checks": result.checks,
+    }, indent=2)
