@@ -5,6 +5,7 @@ KNOWN_CURRENCIES = {"EUR", "USD", "GBP", "CHF", "SEK", "NOK", "DKK", "PLN"}
 
 def run_checks(orders: pd.DataFrame) -> dict[str, int]:
     """Data-quality counts. Each value is the number of offending rows."""
+    orders = orders.dropna(subset=["amount"])
     return {
         "missing_amount": int(orders["amount"].isna().sum()),
         "negative_amount": int((~(orders["amount"] >= 0)).sum()),
