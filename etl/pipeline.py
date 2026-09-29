@@ -21,7 +21,7 @@ def build(raw_orders: pd.DataFrame, raw_rates: pd.DataFrame, since: date | datet
     checks = validate.run_checks(orders)
     orders = clean.drop_test_orders(clean.dedupe_orders(orders))
     if since is not None:
-        orders = orders[orders["order_date"] > pd.Timestamp(since)]
+        orders = orders[orders["order_date"] >= pd.Timestamp(since)]
     orders = fx.to_eur(orders, prepare_rates(raw_rates))
     return Result(
         orders=orders,
