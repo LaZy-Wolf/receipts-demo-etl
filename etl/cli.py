@@ -17,10 +17,11 @@ def main():
 @click.option("--rates", "rates_csv", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--since", type=click.DateTime(formats=["%Y-%m-%d"]), help="Keep orders on or after this date.")
 @click.option("--out", type=click.File("w", encoding="utf-8"), default="-")
-def run(orders_csv, rates_csv, since, out):
+@click.option("--format", "fmt", type=click.Choice(["md", "json"]), default="md", show_default=True)
+def run(orders_csv, rates_csv, since, out, fmt):
     """Build the revenue report."""
     result = pipeline.build(pd.read_csv(orders_csv, dtype=str), pd.read_csv(rates_csv, dtype=str), since=since)
-    out.write(report.render(result))
+    out.write(report.render_json(result) if fmt == "json" else report.render(result))
 
 
 @main.command(name="validate")
