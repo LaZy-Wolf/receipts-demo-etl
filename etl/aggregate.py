@@ -27,7 +27,7 @@ def cohort_retention(orders: pd.DataFrame) -> pd.DataFrame:
     p["month"] = p["order_date"].dt.to_period("M")
     first = p.groupby("customer_id")["month"].transform("min")
     p["cohort"] = first.astype(str)
-    p["months_since_first"] = p["month"].dt.month - first.dt.month
+    p["months_since_first"] = (p["month"].dt.month - first.dt.month).abs()
     table = p.groupby(["cohort", "months_since_first"])["customer_id"].nunique().unstack(fill_value=0)
     table.columns.name = "months_since_first"
     return table
