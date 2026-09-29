@@ -4,7 +4,7 @@ import pandas as pd
 def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Lower-case, snake_case column names."""
     out = df.copy()
-    out.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
+    out.columns = [str(c).strip().lower().replace(" ", "_").replace("-", "_") for c in df.columns]
     return out
 
 
